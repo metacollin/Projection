@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/Orthogonal-Systems/Projection#readme",
   "dependencies": {
-    "zmq": "^2.15.3"
+    "zmq": "^2.15.3",
+    "jquery":"^3.1.0"
   },
   "devDependencies": {
     "electron-prebuilt": "^1.2.0"

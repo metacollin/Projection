@@ -10,10 +10,13 @@
     We are using node <script>document.write(process.versions.node)</script>,
     Chromium <script>document.write(process.versions.chrome)</script>,
     and Electron <script>document.write(process.versions.electron)</script>.
+    <h2>Testing stuff here</h2>
+    <div id="data">nothing</div>
   </body>
 
+  <script>window.$ = window.jQuery = require('jquery');</script>
   <script>
     // You can also require other files to run in this process
-    require('./renderer.js')
+    require('./js/projector.js')
   </script>
 </html>
