@@ -1,27 +1,30 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "name": "Projection",
+  "version": "0.1.0",
+  "description": "Live data viewer",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron/electron-quick-start.git"
+    "url": "git+https://github.com/Orthogonal-Systems/Projection.git"
   },
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial"
+    "Projection",
+    "Origin",
+    "data",
+    "viewer"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "Matthew Ebert",
+  "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/electron/electron-quick-start/issues"
+    "url": "https://github.com/Orthogonal-Systems/Projection/issues"
   },
-  "homepage": "https://github.com/electron/electron-quick-start#readme",
+  "homepage": "https://github.com/Orthogonal-Systems/Projection#readme",
+  "dependencies": {
+    "zmq": "^2.15.3"
+  },
   "devDependencies": {
     "electron-prebuilt": "^1.2.0"
   }
