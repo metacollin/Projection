@@ -10,6 +10,7 @@ $(document).ready(function(){
   var g;
   var now = Date.now();
   var then = now - 1000*60*10;
+  var buffer = []
 
   // pad with zeros
   function pad(n, width, z){
@@ -44,9 +45,8 @@ $(document).ready(function(){
     conn.data_socket = zmq.socket('sub');
     conn.data_socket.on("message", function(){
       var msg = JSON.parse(arguments[1]);
-      msg[0] = new Date(msg[0]);
-      gdata.push(msg);
-      g.updateOptions( {"file": gdata} ); //, "dateWindow": [then, now]} );
+      //msg[0] = new Date(msg[0]);
+      buffer.push(msg);
     });
 
     sub_filter = pad(streamID, 4, '0');
@@ -97,4 +97,31 @@ $(document).ready(function(){
   };
   connectToServer(conn);
   waitForResponse();
+
+  function updateGraph(){
+    if( labels.length > 1 ){
+      console.log(buffer.length);
+      if( buffer.length > 0 ){
+        temp = buffer;
+        buffer = [];
+        newData = temp[0];
+        for( var i=1; i<temp.length; i++){
+          for( var j=1; j<temp[0].length; j++ ){
+            newData[j] += temp[i][j];
+          }
+        }
+        for( var j=1; j<temp[0].length; j++ ){
+          newData[j] = newData[j]/temp.length;
+        }
+        console.log(newData);
+        newData[0] = new Date(newData[0]*1000); // javascript is in ms because someone is a dipshit
+        console.log(newData);
+      }
+      gdata.push(newData);
+      g.updateOptions( {"file": gdata} ); //, "dateWindow": [then, now]} );
+    }
+    setTimeout(arguments.callee, 5000);
+  }
+
+  updateGraph();
 });
