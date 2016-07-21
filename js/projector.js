@@ -5,7 +5,8 @@ $(document).ready(function(){
   var knownStreamVersions = {};
   var streamID = 1;
 
-  var gdata = "";
+  var labels = ["time"];
+  var gdata = [];
   var g;
   var now = Date.now();
   var then = now - 1000*60*10;
@@ -27,12 +28,10 @@ $(document).ready(function(){
       knownStreamVersions = JSON.parse(reply);
       $('#data').text(Object.keys(knownStreamVersions));
       for ( var key in knownStreamVersions ){
-        console.log(knownStreamVersions[key]);
         if ( knownStreamVersions[key].id == streamID ){
-          gdata = "time," + knownStreamVersions[key].keyOrder.join(",");
+          labels = labels.concat(knownStreamVersions[key].keyOrder);
         }
       }
-      console.log(gdata);
       conn.info_socket.close();
     });
     var info_url = 'tcp://' + conn.server.toString() + ':' + conn.info_port.toString();
@@ -44,15 +43,9 @@ $(document).ready(function(){
     var x=0;
     conn.data_socket = zmq.socket('sub');
     conn.data_socket.on("message", function(){
-      var msg = [];
-      Array.prototype.slice.call(arguments).forEach(function(arg){
-        msg.push(arg.toString());
-      });
-      console.log(msg);
-      console.log(msg[1]);
-      gdata = gdata + '\n' + msg[1];
-      now = Date.now();
-      then = now - 1000*60*10;
+      var msg = JSON.parse(arguments[1]);
+      msg[0] = new Date(msg[0]);
+      gdata.push(msg);
       g.updateOptions( {"file": gdata} ); //, "dateWindow": [then, now]} );
     });
 
@@ -71,17 +64,18 @@ $(document).ready(function(){
   }
 
   function waitForResponse(){
-    if( gdata == "" ){
+    if( labels.length == 1 ){
       setTimeout(function(){
         waitForResponse();
       },250);
     } else {
       console.log("we should be good"); 
-      console.log(gdata);
+      console.log(labels);
       g = new dyg(document.getElementById("div_g"), gdata, {
         rollPeriod: 0, 
         legend: 'always',
         title: 'whatever',
+        labels: labels,
         ylabel: 'who cares',
         xlabel: 'Time (HH:MM:SS)',
         strokeWidth: 4,

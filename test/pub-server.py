@@ -42,8 +42,8 @@ def threaded_loop():
         stream = knownStreamVersions[knownStreamVersions.keys()[randrange(0,num_streams)]]
         streamID = stream["id"]
         readings = [ randrange(0,100) for i in range(len(stream["keyOrder"])) ]
-        data = ','.join( map(str, [timestamp] + readings) )
-        msg = [b"{0:04d}".format(streamID), data]
+        data = [timestamp] + readings
+        msg = [b"{0:04d}".format(streamID), json.dumps(data)]
         print("Sending data: " + str(msg))
         socket.send_multipart(msg)
         time.sleep(0.1)
