@@ -24,7 +24,8 @@
   "homepage": "https://github.com/Orthogonal-Systems/Projection#readme",
   "dependencies": {
     "zmq": "^2.15.3",
-    "jquery":"^3.1.0"
+    "jquery":"^3.1.0",
+    "dygraphs":"^1.1.1"
   },
   "devDependencies": {
     "electron-prebuilt": "^1.2.0"

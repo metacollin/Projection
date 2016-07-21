@@ -46,7 +46,7 @@ def threaded_loop():
         msg = [b"{0:04d}".format(streamID), data]
         print("Sending data: " + str(msg))
         socket.send_multipart(msg)
-        time.sleep(2)
+        time.sleep(0.1)
 
 run_event = threading.Event()
 run_event.set()
