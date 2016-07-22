@@ -78,6 +78,7 @@ $(document).ready(function(){
         labels: labels,
         ylabel: 'who cares',
         xlabel: 'Time (HH:MM:SS)',
+        errorBars: true,
         strokeWidth: 4,
         highlightCircleSize: 4,
         labelsDivStyles: {
@@ -105,14 +106,27 @@ $(document).ready(function(){
         temp = buffer;
         buffer = [];
         newData = temp[0];
+
+        // average
         for( var i=1; i<temp.length; i++){
           for( var j=1; j<temp[0].length; j++ ){
             newData[j] += temp[i][j];
           }
         }
         for( var j=1; j<temp[0].length; j++ ){
-          newData[j] = newData[j]/temp.length;
+          newData[j] = [newData[j]/temp.length, 0];
         }
+
+        // standard dev
+        for( var i=1; i<temp.length; i++){
+          for( var j=1; j<temp[0].length; j++ ){
+            newData[j][1] += Math.pow(temp[i][j] - newData[j][0], 2)/temp.length;
+          }
+        }
+        for( var j=1; j<temp[0].length; j++ ){
+          newData[j][1] = Math.sqrt(newData[j][1]);
+        }
+
         console.log(newData);
         newData[0] = new Date(newData[0]*1000); // javascript is in ms because someone is a dipshit
         console.log(newData);
